@@ -1,3 +1,3 @@
-# test_flutter_app
+# FlutterRestApi
 
-Flutter tryout.
+A Flutter project implementing REST API.
