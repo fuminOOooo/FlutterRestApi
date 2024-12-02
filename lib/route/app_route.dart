@@ -8,12 +8,16 @@ class Approute {
   MaterialPageRoute get homeViewRoute {
     return RouteBase(builder: (BuildContext context) {
       return ChangeNotifierProvider(
-        create: (context) {
-          return HomeViewModel();
-        },
-        builder: (context, child) {
-          return const HomeView(title: "woii",);
-        },
+        create: (context) => HomeProvider(),
+        builder: (context, child) => const HomeView(title: Constant.appName),
+      );
+    });
+  }
+  MaterialPageRoute detailViewRoute(int itemIndex) {
+    return RouteBase(builder: (BuildContext context) {
+      return ChangeNotifierProvider(
+        create: (context) => DetailProvider(currentItemIndex: itemIndex),
+        builder: (context, child) => const DetailView(),
       );
     });
   }

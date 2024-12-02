@@ -1,8 +1,8 @@
 part of 'view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key, this.title});
-  final String? title;
+  const HomeView({super.key, required this.title});
+  final String title;
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -12,44 +12,71 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<HomeViewModel>(context, listen: true);
+      Provider.of<HomeProvider>(context, listen: false).getItemsViaOffset();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<HomeViewModel>(context, listen: true);
-    var size = MediaQuery.of(context).size;
+    final homeProvider = Provider.of<HomeProvider>(context, listen: true);
+
+    appBar() {
+      return AppBar(
+        title: Text(widget.title),
+      );
+    }
+
+    grid() {
+      return GridView.count(
+          crossAxisCount: Constant.gridColumnCount,
+          children: List.generate(homeProvider.itemCount, (index) {
+            int itemIndex = homeProvider.getItemEntryNumber(index);
+            return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder()),
+                onPressed: () {
+                  Navigator.push(
+                      context, Approute().detailViewRoute(itemIndex));
+                },
+                child: GridCellView(
+                  entryNumber: itemIndex,
+                  oneItem: homeProvider.showedItems[index],
+                ));
+          }));
+    }
+
+    pagination() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton.small(
+            heroTag: Constant.decreaseOffsetButton,
+            onPressed: homeProvider.decreaseOffset,
+            child: const Text(Constant.decreaseOffsetButton),
+          ),
+          horizontalDefaultPadding(Text(
+              style: Constant.boldedText,
+              '${homeProvider.currentOffset} - ${homeProvider.currentOffset + 10}')),
+          FloatingActionButton.small(
+            heroTag: Constant.increaseOffsetButton,
+            onPressed: homeProvider.increaseOffset,
+            child: const Text(Constant.increaseOffsetButton),
+          ),
+        ],
+      );
+    }
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        appBar: appBar(),
+        body: SafeArea(
+            child: Center(
+                child: Stack(
           children: [
-            const Text("Halo"),
-            Text("Ini ada angka : ${homeViewModel.counter}"),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FloatingActionButton(
-                        onPressed: homeViewModel.decrementCounter,
-                        child: const Text("-"),
-                      )),
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FloatingActionButton(
-                        onPressed: homeViewModel.incrementCounter,
-                        child: const Text("+"),
-                      )),
-                ],
-              ),
-            ),
+            grid(),
+            Column(
+              children: [const Spacer(), pagination()],
+            )
           ],
-        ),
-      ),
-    );
+        ))));
   }
 }

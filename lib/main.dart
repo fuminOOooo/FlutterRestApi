@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'shared/constant.dart';
 import 'view/view.dart';
-import 'viewmodel/view_model.dart';
+import 'provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +17,8 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => HomeViewModel(),
-            builder: (context, child) => const HomeView(),
+            create: (context) => HomeProvider(),
+            builder: (context, child) => const HomeView(title: Constant.appName),
           ),
         ],
       ),
