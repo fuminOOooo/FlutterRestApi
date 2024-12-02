@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.1
   dio: ^5.7.0
+  just_audio: ^0.9.42
 
 dev_dependencies:
   flutter_test:
@@ -20,6 +21,8 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
+  assets:
+    - assets/speaker.png
   uses-material-design: true
 
 

@@ -14,6 +14,7 @@ class Constant {
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/';
   static const String imageExtension = '.png';
   static const String gifImageExtension = '.gif';
+  static const String playCryButton = 'Play Cry';
 
   static const int gridColumnCount = 2;
   

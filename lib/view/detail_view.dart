@@ -19,41 +19,50 @@ class _DetailViewState extends State<DetailView> {
   Widget build(BuildContext context) {
     final detailProvider = Provider.of<DetailProvider>(context, listen: true);
 
-    image() {
-      return verticalDefaultPadding(
-        Image.network(
-          scale: Constant.imageScaleMultiplier,
-          gifImageWholeUrl(detailProvider.currentItemIndex))
+    appBar() {
+      return AppBar(
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+            style: Constant.bigBoldedText,
+            detailProvider.getCurrentItemName().toUpperCase()),
       );
+    }
+
+    image() {
+      return verticalDefaultPadding(Image.network(
+          scale: Constant.imageScaleMultiplier,
+          gifImageWholeUrl(detailProvider.currentItemIndex)));
     }
 
     stats() {
       if (detailProvider.isLoading) {
         return const CircularProgressIndicator();
       } else {
-        return Column(
-          children: [
-            Text(
-                style: Constant.bigBoldedText,
-                detailProvider.getCurrentItemName().toUpperCase())
-          ],
+        return const Column(
+          children: [],
         );
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
+    cryButton() {
+      return FloatingActionButton.small(
           onPressed: () {
-            Navigator.pop(context);
+            detailProvider.playCry();
           },
-        ),
-      ),
+          child: verticalDefaultPadding(Image.asset(ImageAssets.playSound)));
+    }
+
+    return Scaffold(
+      appBar: appBar(),
       body: SafeArea(
           child: Center(
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [image(), stats()],
+        children: [image(), stats(), cryButton()],
       ))),
     );
   }

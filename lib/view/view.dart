@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rest_api/route/route.dart';
+import 'package:flutter_rest_api/shared/image_assets.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import '../provider/provider.dart';
 import '../shared/constant.dart';
