@@ -20,7 +20,6 @@ class ApiService {
 
   Future<OneDataModel> callOneDataApi(int itemIndex) async {
     String url = Constant.oneDataEndpoint + itemIndex.toString();
-    print(url);
     var response = await dio().get(url);
     return OneDataModel.fromJson(response.data);
   }

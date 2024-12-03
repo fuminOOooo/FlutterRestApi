@@ -1,17 +1,10 @@
 part of 'provider.dart';
 
 class DetailProvider with ChangeNotifier {
-
   int currentItemIndex;
   bool isLoading = false;
   DetailProvider({required this.currentItemIndex});
   OneDataModel? currentItem;
-
-  playCry() async {
-    final AudioPlayer player = AudioPlayer();
-    player.setUrl(getCurrentItemCry());
-    player.play();
-  }
 
   getItemViaIndex() async {
     isLoading = true;
@@ -19,6 +12,13 @@ class DetailProvider with ChangeNotifier {
     currentItem = result;
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> playCry() async {
+    final AudioPlayer player = AudioPlayer();
+    final AudioSource source = AudioSource.uri(Uri.parse(getCurrentItemCry()));
+    await player.setAudioSource(source);
+    await player.play();
   }
 
   String getCurrentItemName() {
@@ -33,8 +33,8 @@ class DetailProvider with ChangeNotifier {
     if (currentItem == null) {
       return '';
     } else {
+      print(currentItem!.cries.latest);
       return currentItem!.cries.latest;
     }
   }
-
 }
